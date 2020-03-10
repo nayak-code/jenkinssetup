@@ -1,0 +1,33 @@
+  tasks:
+   - name: Install java,git,maven
+     apt:
+      name: "{{item.a}}"
+      state: present
+      update_cache: "{{item.b}}"
+     with_items:
+      - {a: openjdk-8-jdk,b: yes}
+      - {a: git,b: no}
+      - {a: maven,b: no}
+   - name: Download jenkins.war
+     get_url:
+      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+      dest: /home/ubuntu
+   - name: Start jenkins
+     shell: java -jar jenkins.war &
+- name: setup tomcat on QA and Prod server
+  hosts: server
+  tasks:
+   - name: install tomcat8 and tomcat8-admin
+     apt:
+      name: "{{item.c}}"
+      state: present
+      update_cache: "{{item.d}}"
+     with_items:
+      - {c: tomcat8,d: yes}
+      - {c: tomcat8-admin,d: no}
+   - name: Copy tomcat-users.xml file
+     copy:
+      src: tomcat-users.xml
+      dest: /etc/tomcat8
+...
+
