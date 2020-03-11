@@ -1,3 +1,6 @@
+---
+- name: Setup jenkin server
+  host: jenkinsserver
   tasks:
    - name: Install java,git,maven
      apt:
